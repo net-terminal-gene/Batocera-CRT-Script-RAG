@@ -15,8 +15,20 @@ YYYY-MM-DD_short-description/
 ├── design/      — architecture and flow documents
 ├── research/    — live system findings and technical analysis
 ├── debug/       — step-by-step test logs and bug investigations
-└── plan.md      — implementation plan for the session
+├── plan.md      — implementation plan for the session
+└── VERDICT.md   — session retrospective and final assessment
 ```
+
+### VERDICT.md
+
+Each session's `VERDICT.md` is written after development concludes. It captures:
+
+- **Plan vs reality** — how far the shipped code deviated from the original plan, with a comparison table of every major architectural decision
+- **Unanticipated bugs** — bugs that no plan or design doc predicted, with root causes and the fixes that resolved them
+- **Models used** — which AI models handled which phases (research, design, debugging, verification)
+- **What worked / what didn't** — concrete lessons learned, not generic advice
+
+This is the single most valuable document for future sessions: it tells you what the plan got wrong, what the real architecture is, and which pitfalls to avoid.
 
 ## How This Is Used
 
