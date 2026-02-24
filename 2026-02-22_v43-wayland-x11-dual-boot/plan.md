@@ -2,9 +2,11 @@
 
 ## Problem
 
-- Batocera v43 Steam Deck will use Wayland by default for HD Mode.
+- Batocera v42 introduced `VariableRefresh true` in the amdgpu Xorg config, causing persistent screen tearing on Steam Deck (AMD Van Gogh) X11 builds. Exhaustive testing (13 driver/kernel-param combos, TearFree, vblank_mode, Mesa VK present mode) failed to resolve it on v42/v43 X11.
+- Batocera v43 Steam Deck will use Wayland by default for HD Mode, which eliminates the X11 tearing issue for HD use.
 - CRT Mode requires X11 (switchres, 15 kHz, xrandr).
 - The CRT Script currently assumes X11 and breaks on Wayland builds.
+- The dual-boot approach solves both problems: Wayland for HD (no tearing), X11 for CRT (switchres/xrandr).
 
 ## Why Overlay is the Best Option
 
