@@ -1,10 +1,10 @@
-# Batocera-CRT-Script-RAG
+# Batocera-Development-RAG
 
-Historical reference archive for the [Batocera-CRT-Script](https://github.com/ZFEbHVUE/Batocera-CRT-Script) project.
+Retrieval-augmented knowledge base for Batocera-related development. Covers multiple projects: [Batocera-CRT-Script](https://github.com/ZFEbHVUE/Batocera-CRT-Script), [batocera-unofficial-addons](https://github.com/batocera-unofficial-addons/batocera-unofficial-addons), [batocera.linux](https://github.com/batocera-linux/batocera.linux), and others.
 
 ## Purpose
 
-This repository preserves all research, design documents, debug logs, and test results generated during development of the Batocera CRT Script. It serves as a retrieval-augmented knowledge base so that future development sessions have full context on past decisions, bugs encountered, fixes applied, and lessons learned.
+This repository preserves research, design documents, debug logs, and verdicts for Batocera development efforts. It serves as institutional memory so that future sessions have full context on past decisions, bugs encountered, fixes applied, and lessons learned — across CRT Script, BUA add-ons, storage manager, Wayland/X11, and more.
 
 ## Structure
 
@@ -19,28 +19,40 @@ YYYY-MM-DD_short-description/
 └── VERDICT.md   — session retrospective and final assessment
 ```
 
+Entry names use scope prefixes when helpful (e.g. `bua-steam-*`, `bsm-mergerfs-*`, `crt-*`, `v43-*`).
+
 ### VERDICT.md
 
 Each session's `VERDICT.md` is written after development concludes. It captures:
 
-- **Plan vs reality** — how far the shipped code deviated from the original plan, with a comparison table of every major architectural decision
-- **Unanticipated bugs** — bugs that no plan or design doc predicted, with root causes and the fixes that resolved them
-- **Models used** — which AI models handled which phases (research, design, debugging, verification)
-- **What worked / what didn't** — concrete lessons learned, not generic advice
-
-This is the single most valuable document for future sessions: it tells you what the plan got wrong, what the real architecture is, and which pitfalls to avoid.
+- **Plan vs reality** — how far the shipped code deviated from the original plan
+- **Unanticipated bugs** — root causes and fixes
+- **Models used** — which AI handled which phases
+- **What worked / what didn't** — concrete lessons learned
 
 ## How This Is Used
 
-This repository is designed to be fed into AI coding assistants (Cursor, Claude, etc.) as context during development sessions. Rather than re-explaining the entire project history each time, the relevant session folder is attached or referenced so the model has immediate access to:
+This repository is fed into AI coding assistants (Cursor, Claude, etc.) as context during development. Rather than re-explaining project history each time, the relevant session folder is attached so the model has access to:
 
 - What was tried before and why it failed
-- Exact system states at each step (SSH snapshots, log excerpts, config diffs)
+- Exact system states (SSH snapshots, log excerpts, config diffs)
 - Root causes of past bugs and the fixes that resolved them
-- Architectural decisions and the reasoning behind them
+- Architectural decisions and reasoning
 
-This eliminates repeated debugging of the same issues and gives the AI model the equivalent of institutional memory for the project.
+## Scope
 
-## Why This Exists
+Development efforts documented here include:
 
-The Batocera CRT Script involves complex interactions between Syslinux boot configurations, OverlayFS persistence, X11/Wayland display stacks, and Batocera's emulatorlauncher pipeline. Bugs are often subtle (e.g., video mode string precision mismatches) and require systematic documentation to diagnose and prevent regressions. This archive ensures that knowledge is never lost between sessions.
+- **Batocera-CRT-Script** — CRT/HD mode switching, videomode preservation
+- **BUA (batocera-unofficial-addons)** — Steam, Fightcade, add-on fixes
+- **batocera.linux** — storage manager, mergerFS, core scripts
+- **v43 / Wayland / X11** — display stack, dual-boot, tearing fixes
+
+## Renaming (optional)
+
+The repo was originally Batocera-CRT-Script-RAG. To fully rebrand to Batocera-Development-RAG:
+
+1. **GitHub:** Settings → General → Repository name → `Batocera-Development-RAG`
+2. **Local:** `mv Batocera-CRT-Script-RAG Batocera-Development-RAG`
+3. **Remote:** `git remote set-url origin <new-URL>` if the clone path changed
+4. **Workspace:** Update Cursor/VSCode workspace to reference the new folder path
