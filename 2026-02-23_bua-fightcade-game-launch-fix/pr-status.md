@@ -8,12 +8,13 @@
 | PR | [#143](https://github.com/batocera-unofficial-addons/batocera-unofficial-addons/pull/143) |
 | Branch | `fix-fightcade` |
 | Title | fix(fightcade): enable game launch on Batocera |
-| Status | **OPEN** |
+| Status | **MERGED** |
 | Created | 2026-02-23 |
+| Merged | 2026-02-25 |
 
 ## Review / Comments
 
-Awaiting review. No comments yet.
+Merged to upstream batocera-unofficial-addons.
 
 ## Changes Included
 
