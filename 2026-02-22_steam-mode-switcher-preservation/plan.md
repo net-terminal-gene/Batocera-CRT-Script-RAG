@@ -1,5 +1,11 @@
 # Steam Mode Switcher Preservation
 
+## Outcome (Context Switch)
+
+**We went with the BUA approach instead.** A boot-time ensure script in batocera-unofficial-addons adds `steam.emulator=sh` and `steam.core=sh` when missing (e.g. after mode-switch restore). No Mode Switcher changes. See `2026-02-25_bua-steam-boot-ensure` and [PR #145](https://github.com/batocera-unofficial-addons/batocera-unofficial-addons/pull/145).
+
+This Mode Switcher preservation design is kept for possible future revisit.
+
 ## Problem
 
 BUA (Batocera Unofficial Addons) Steam requires `steam.emulator=sh` and `steam.core=sh` in batocera.conf to run .sh launchers. When users switch between HD and CRT modes via the Mode Switcher, Steam config can be lost and games fail with:

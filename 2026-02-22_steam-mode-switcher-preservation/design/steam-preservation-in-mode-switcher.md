@@ -1,5 +1,7 @@
 # Design: Preserve Steam Settings Across Mode Switches
 
+**Note:** We implemented the BUA boot-time ensure approach instead (see `2026-02-25_bua-steam-boot-ensure`). This Mode Switcher design is preserved for possible revisit.
+
 ## Goal
 
 Ensure BUA Steam works in both HD and CRT mode by preserving `steam.emulator`, `steam.core`, and per-game `steam["*.sh"].videomode` entries when the Mode Switcher restores batocera.conf.
