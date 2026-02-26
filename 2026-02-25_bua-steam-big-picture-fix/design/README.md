@@ -29,8 +29,9 @@ EmulationStation → Steam_Big_Picture.sh → Launcher "-gamepadui"
 
 | Component | Purpose |
 |-----------|---------|
-| `Launcher` | Main script at `/userdata/system/add-ons/steam/Launcher` — deployed from `steam/extra/Launcher` |
-| `steam.sh` | Install script — downloads Launcher from GitHub `steam/extra/Launcher` |
+| `Launcher` | Main script at `/userdata/system/add-ons/steam/Launcher` — deployed from `steam/extra/Launcher` (old) or `steam/extra/Launcher2` (latest) |
+| `steam.sh` | Old install script — downloads Launcher from GitHub |
+| `steam2.sh` | Latest install script (BUA installer) — downloads Launcher2 from GitHub |
 | `Steam_Big_Picture.sh` | ROM launcher in `/userdata/roms/steam/` — invokes `Launcher "-gamepadui"` |
 | wmctrl | X11 window manager control — detects Steam window, manages focus/fullscreen |
 

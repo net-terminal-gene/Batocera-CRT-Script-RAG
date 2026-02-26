@@ -28,11 +28,10 @@ pgrep -fa steam
 | wmctrl -l shows "Cannot open display" | XAUTHORITY not set in Launcher environment |
 | Steam works via SSH but not from ES | Different env when launched from ES — missing exports |
 
-## Pre-Fix Checklist
-
-Before applying fix:
+## Pre/Post-Fix Checklist
 
 1. Confirm Steam installed via BUA at `/userdata/system/add-ons/steam/`
-2. Confirm Launcher path: `/userdata/system/add-ons/steam/Launcher`
+2. Confirm Launcher path: `/userdata/system/add-ons/steam/Launcher` (steam2.sh installs Launcher2 here)
 3. Note Batocera system language (affects window title)
 4. On dual-GPU: identify dGPU PCI slot if DRI_PRIME fix needed
+5. **Local QA:** Copy `steam/extra/Launcher2` to device: `scp steam/extra/Launcher2 root@batocera.local:/userdata/system/add-ons/steam/Launcher`

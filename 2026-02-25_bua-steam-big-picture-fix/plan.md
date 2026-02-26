@@ -4,9 +4,25 @@
 
 Composer + batocera-unofficial-addons repo. Source: [HOW-TO] Fix Steam Big Picture Mode in Batocera PDF (Steam black screen / returns to menu when launching from EmulationStation).
 
+## Build Nomenclature (teammate clarification)
+
+| Component   | Old build     | Latest build   |
+|------------|---------------|----------------|
+| Installer  | `steam.sh`    | `steam2.sh`    |
+| Launcher   | `Launcher`    | `Launcher2`    |
+
+- The BUA installer uses `steam2.sh` → downloads `Launcher2` to `/userdata/system/add-ons/steam/Launcher`.
+- A prior merged PR accidentally changed the old build (`steam.sh` / `Launcher`) instead of the latest (`steam2.sh` / `Launcher2`).
+- Reports mention Launcher and Launcher2 separately; both exist in the repo.
+
 ## Problem
 
-Steam Big Picture Mode launched from Batocera EmulationStation either returns immediately to the menu or shows a black screen with a mouse cursor. Launching via SSH works fine. Affects Batocera 42 on systems with AMD Renoir iGPU + RX 6600 XT (and potentially other dual-GPU or non-English locales).
+Steam Big Picture Mode launched from Batocera EmulationStation either returns immediately to the menu or shows a black screen with a mouse cursor. Launching via SSH works fine.
+
+**Hardware scope (teammate validation):**
+- **Issue reproduced:** Ryzen CPU + AMD GPU only.
+- **Works without issues:** Intel + Nvidia, Intel no GPU, Steam Deck (confirmed).
+- **Untested / uncertain:** Ryzen + Nvidia.
 
 ## Root Cause
 
@@ -18,20 +34,23 @@ Three issues identified in the PDF:
 
 ## Solution
 
+**Primary target: `Launcher2`** (latest build; used by `steam2.sh` via installer). Launcher (old) may be fixed for completeness if both builds remain in use.
+
 | Change | File | Effort |
 |--------|------|--------|
-| Add `export XAUTHORITY=/var/run/xauth` | `steam/extra/Launcher` | 1 line |
-| Add `export RIM_ALLOW_ROOT=1` and `export HOME=/userdata/system/add-ons/steam` (Steam runtime compatibility; Launcher2 has these) | `steam/extra/Launcher` | 2 lines |
-| Broaden wmctrl regex to match localized titles: replace `grep -qi "Steam"` with `grep -qiE "Steam|Big.Picture|Big-Picture"` in both wait loop and monitor loop | `steam/extra/Launcher` | 2 replacements |
-| Align TIMEOUT with Launcher2/PDF: 240 seconds (Launcher currently uses 60) | `steam/extra/Launcher` | 1 line |
+| Add `export XAUTHORITY=/var/run/xauth` | `steam/extra/Launcher2` | 1 line |
+| Broaden wmctrl regex to match localized titles: replace `grep -qi "Steam"` with `grep -qiE "Steam|Big.Picture|Big-Picture"` in both wait loop and monitor loop | `steam/extra/Launcher2` | 2 replacements |
+| (Launcher2 already has RIM_ALLOW_ROOT, HOME, TIMEOUT=240, lbfix.sh) | — | — |
+| **Launcher (old build)** — same fixes if still served: XAUTHORITY, RIM_ALLOW_ROOT, HOME, broaden regex, TIMEOUT=240 | `steam/extra/Launcher` | Optional |
 | DRI_PRIME config (optional / deferred) — config file or auto-detect for dual-GPU; doc-only if not implemented | TBD | Medium |
-| Hide ES / fullscreen Steam (optional / deferred) — PDF has these; `wmctrl -r "Big-Picture"` fails on localized titles, would need broader match | `steam/extra/Launcher` | Low–medium |
+| Hide ES / fullscreen Steam (optional / deferred) — PDF has these; `wmctrl -r "Big-Picture"` fails on localized titles, would need broader match | `steam/extra/Launcher2` | Low–medium |
 
 ## Files Touched
 
 | Repo | File | Change |
 |------|------|--------|
-| batocera-unofficial-addons | `steam/extra/Launcher` | Add XAUTHORITY, RIM_ALLOW_ROOT, HOME; broaden wmctrl regex (2 places); TIMEOUT=240 |
+| batocera-unofficial-addons | `steam/extra/Launcher2` | Add XAUTHORITY; broaden wmctrl regex (2 places) |
+| batocera-unofficial-addons | `steam/extra/Launcher` | Optional: same fixes if old build still in use |
 
 ## Out of Scope (this iteration)
 
@@ -44,4 +63,5 @@ Three issues identified in the PDF:
 - [ ] Launch Steam Big Picture from Ports menu — does not return immediately to menu
 - [ ] Steam Big Picture displays (no black screen)
 - [ ] Test on German (or other non-English) Batocera locale — window detection works
-- [ ] On dual-GPU AMD systems: verify Steam uses dGPU (or document DRI_PRIME config)
+- [ ] On Ryzen + AMD dual-GPU systems: verify Steam uses dGPU (or document DRI_PRIME config) — primary repro config
+- [ ] Regression check: Intel+Nvidia, Intel no GPU, Steam Deck (teammate confirms these work; verify after changes)

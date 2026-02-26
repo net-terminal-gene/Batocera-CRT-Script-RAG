@@ -36,7 +36,7 @@ cat /sys/class/drm/cardN/device/uevent | grep PCI_SLOT_NAME
 
 ## Current BUA Launcher Analysis
 
-**File:** `batocera-unofficial-addons/steam/extra/Launcher`
+**File:** `batocera-unofficial-addons/steam/extra/Launcher` (old build)
 
 | Fix | Status |
 |-----|--------|
@@ -45,16 +45,16 @@ cat /sys/class/drm/cardN/device/uevent | grep PCI_SLOT_NAME
 | DRI_PRIME | ❌ Missing |
 | Localized window regex | ❌ Uses `grep -qi "Steam"` only |
 
-**File:** `batocera-unofficial-addons/steam/extra/Launcher2`
+**File:** `batocera-unofficial-addons/steam/extra/Launcher2` (latest build) — **FIXED**
 
 | Fix | Status |
 |-----|--------|
-| XAUTHORITY | ❌ Missing |
+| XAUTHORITY | ✅ Added |
 | RIM_ALLOW_ROOT, HOME | ✅ Present |
-| DRI_PRIME | ❌ Missing |
-| Localized window regex | ❌ Uses `grep -qi "Steam"` only |
+| DRI_PRIME | ❌ Missing (deferred) |
+| Localized window regex | ✅ `grep -qiE "Steam|Big.Picture|Big-Picture"` |
 
-**Deployment:** `steam.sh` downloads Launcher (not Launcher2) from GitHub to `/userdata/system/add-ons/steam/Launcher`.
+**Deployment:** `steam2.sh` (BUA installer) downloads Launcher2 from GitHub to `/userdata/system/add-ons/steam/Launcher`. `steam.sh` (old build) downloads Launcher.
 
 ## PDF Working Script Additions
 
