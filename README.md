@@ -12,14 +12,55 @@ Each top-level directory is a timestamped session covering a specific developmen
 
 ```
 YYYY-MM-DD_short-description/
-├── design/      — architecture and flow documents
-├── research/    — live system findings and technical analysis
-├── debug/       — step-by-step test logs and bug investigations
-├── plan.md      — implementation plan for the session
-└── VERDICT.md   — session retrospective and final assessment
+├── design/        — architecture and flow documents
+├── research/      — live system findings and technical analysis
+├── debug/         — step-by-step test logs and bug investigations
+├── plan.md        — implementation plan for the session
+├── pr-status.md   — PR tracking (required for new entries)
+└── VERDICT.md     — session retrospective and final assessment
 ```
 
+**pr-status.md is required for all new entries.** Update it when a PR is created, merged, or closed. Use "No PR yet" or similar until a PR exists.
+
 Entry names use scope prefixes when helpful (e.g. `bua-steam-*`, `bsm-mergerfs-*`, `crt-*`, `v43-*`).
+
+### pr-status.md
+
+Tracks the Pull Request for the session. Example:
+
+```markdown
+# PR Status — [SCOPE_TITLE]
+
+## PR #[number]
+
+| Field | Value |
+|-------|-------|
+| Repo | owner/repo |
+| PR | [#390](https://github.com/owner/repo/pull/390) |
+| Branch | `feature-branch` → `main` |
+| Title | Add feature description |
+| Status | **OPEN** / **OPEN (Draft)** / **MERGED** / **CLOSED** |
+| Created | YYYY-MM-DD |
+
+## Review Comments
+
+### 1. [Topic] (reviewer, date)
+
+**File:** path
+
+**Comment:** "..."
+
+**Status:** Addressed / Pending
+
+---
+
+## Outstanding Items
+
+- [ ] Item 1
+- [ ] Item 2
+```
+
+See `2026-01-26_hd-crt-mode-switcher/pr-status.md` for a full example.
 
 ### VERDICT.md
 
