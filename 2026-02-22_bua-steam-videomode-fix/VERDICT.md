@@ -19,7 +19,14 @@ Per-game VIDEO MODE for BUA Steam games was not applied because configgen looked
 | `steam/extra/es_systems_steam.cfg` | -system steam, sh emulator |
 | `steam/extra/es_features_steam.cfg` | Removed videomode from features |
 | `steam/steam.sh` | Add steam.emulator=sh, steam.core=sh on install |
+| `steam/steam2.sh` | Add steam.emulator=sh, steam.core=sh on install (same as steam.sh) |
+| `steam/extra/ensure_steam_batocera_conf.sh` | Boot-time ensure: add steam.emulator=sh, steam.core=sh if missing (for HD/CRT mode switcher) |
+| `steam/steam.sh`, `steam/steam2.sh` | Download ensure script, add to custom.sh at install |
 
-## Open Item: steam2.sh
+## Boot-Time Ensure (Mode-Switcher Compatibility)
 
-BUA UI uses `steam2.sh`, not `steam.sh`. Ensure `steam2.sh` gains the same batocera.conf write logic before PR merge.
+When batocera.conf is restored from a mode backup (e.g. HD↔CRT) that predates Steam install, steam.* is wiped. `ensure_steam_batocera_conf.sh` runs at boot via custom.sh and adds steam.emulator=sh, steam.core=sh if missing. Per-game videomode stays in each mode's backup (HD: 1920x1080, CRT: 854x480)—no re-apply from source.
+
+## Note: steam.sh vs steam2.sh
+
+`steam.sh` is the old build (multi-part AppImage). `steam2.sh` is the latest build (single AppImage, overlay migration). Both require the batocera.conf write logic for videomode. Same distinction: Launcher/Launcher2, create-steam-launchers.sh/create-steam-launchers2.sh.
