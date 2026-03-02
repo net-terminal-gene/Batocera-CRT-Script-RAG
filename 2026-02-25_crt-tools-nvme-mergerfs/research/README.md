@@ -1,4 +1,4 @@
-# Research — CRT Tools on NVMe (mergerFS Conflict)
+# Research — CRT Tools on Boot Drive (mergerFS Conflict)
 
 ## Findings
 
@@ -18,13 +18,13 @@ All CRT tool operations use `/userdata/roms/crt` — the mergerFS pool path.
 
 ### Current Physical Location (2026-02-25)
 
-- NVMe (`.roms_base/crt`): 0 files
+- Boot drive (`.roms_base/crt`): 0 files
 - BATO-ALL: 0 files
 - BATO-PARROT: 6 files
 - BATO-LG: 0 files
 
-CRT tools currently reside on BATO-PARROT. With `=NC` fix, mode switcher writes would continue landing there — problematic when BATO-PARROT is disconnected during boot/mode switch.
+CRT tools currently reside on BATO-PARROT. With `=NC` fix, mode switcher writes would continue landing there — problematic when BATO-PARROT is disconnected during boot/mode switch. CRT tools must be on the boot drive (NVMe, SATA, or microSD).
 
 ### mergerFS Limitation
 
-mergerFS has no per-subdirectory or per-path branch policy. You cannot say "NVMe is =NC except for `/crt/`". The `=NC` flag applies to the entire branch.
+mergerFS has no per-subdirectory or per-path branch policy. You cannot say "boot-drive branch is =NC except for `/crt/`". The `=NC` flag applies to the entire branch.

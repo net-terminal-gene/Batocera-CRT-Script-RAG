@@ -1,4 +1,4 @@
-# CRT Tools on NVMe (mergerFS Conflict)
+# CRT Tools on Boot Drive (mergerFS Conflict)
 
 ## Agent/Model Scope
 
@@ -6,18 +6,18 @@ Composer + ssh-batocera. Depends on 2026-02-24_bsm-mergerfs-nc-fix (applied and 
 
 ## Problem
 
-With the mergerFS `=NC` fix applied, new file writes to `/userdata/roms/` go to external drives, not the NVMe. The Batocera-CRT-Script mode switcher **requires** CRT Tools (`/userdata/roms/crt/`) to be on the NVMe during HD/CRT mode switches because:
+With the mergerFS `=NC` fix applied, new file writes to `/userdata/roms/` go to external drives, not the boot drive. The Batocera-CRT-Script mode switcher **requires** CRT Tools (`/userdata/roms/crt/`) to be on the **Batocera boot drive** (NVMe, SATA, or microSD) during HD/CRT mode switches because:
 
 1. Mode switches run on boot or live — external drives may not be mounted yet
 2. The switcher reads `GunCon2_Calibration.sh` from `/userdata/roms/crt/` to get video output
 3. The switcher **writes** all CRT tools to `/userdata/roms/crt/` on every mode switch (`rm -rf` + `cp`)
 4. With `=NC`, those writes would land on an external drive (BATO-PARROT, etc.) — tools disappear if the drive is disconnected during a switch
 
-Currently crt is on BATO-PARROT; it needs to be on NVMe.
+Currently crt is on BATO-PARROT; it needs to be on the boot drive.
 
 ## Root Cause
 
-- mergerFS `=NC` fix correctly blocks new files on NVMe for retro ROMs
+- mergerFS `=NC` fix correctly blocks new files on the boot-drive base for retro ROMs
 - CRT Tools live under `/userdata/roms/crt/` — the mergerFS pool
 - No exception exists for the `crt` subdirectory; mergerFS has no per-path policies
 - Mode switcher (`03_backup_restore.sh`) hardcodes `/userdata/roms/crt` for reads and writes
@@ -26,7 +26,7 @@ Currently crt is on BATO-PARROT; it needs to be on NVMe.
 
 **Option A — Bind mount (recommended)**
 
-Overlay `/userdata/roms/crt` with the NVMe physical path so all access goes to NVMe:
+Overlay `/userdata/roms/crt` with the boot-drive physical path so all access goes to the boot drive:
 
 ```bash
 mkdir -p /userdata/.roms_base/crt
@@ -35,7 +35,7 @@ mount --bind /userdata/.roms_base/crt /userdata/roms/crt
 
 Must run **after** mergerFS mounts `/userdata/roms`, **before** mode switcher or EmulationStation. Add to Batocera boot sequence (e.g. `custom.sh`, or a new init script that runs after `S11share`/storage manager).
 
-One-time migration: copy current CRT content from BATO-PARROT to `/userdata/.roms_base/crt/` before enabling bind mount.
+One-time migration: copy current CRT content from BATO-PARROT to `/userdata/.roms_base/crt/` (boot drive) before enabling bind mount.
 
 **Option B — Script change**
 
@@ -56,7 +56,7 @@ Use `/userdata/roms_crt/` (outside the mergerFS pool). Update mode switcher and 
 ## Validation
 
 - [ ] CRT Tools visible in EmulationStation after boot (with and without external drives)
-- [ ] HD→CRT mode switch succeeds with only NVMe connected
+- [ ] HD→CRT mode switch succeeds with only boot drive connected
 - [ ] CRT→HD mode switch succeeds
 - [ ] GunCon2_Calibration.sh readable by mode switcher
 - [ ] No new files created on external drives under `crt/` after mode switch
